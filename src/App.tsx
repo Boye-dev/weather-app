@@ -11,6 +11,8 @@ import snow from "./assets/snow.png";
 import thunderstorm from "./assets/thunderstorm.png";
 import rain from "./assets/rain.png";
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+
 type RecordOrNull = Record<string, any> | null;
 
 const renderLabel = (key: string, value: string | number) => (
@@ -28,12 +30,12 @@ function App() {
   const [data, setData] = useState<RecordOrNull>(null);
   const [error, setError] = useState<string | null>(null);
   const date = new Date();
-  const API_KEY = "dc528f8ead8652dee454bb7242a5a154";
+  const BASE_URL = "https://api.openweathermap.org";
 
   const fetchCurrentWeather = async (latitude: number, longitude: number) => {
     try {
       const res = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
+        `${BASE_URL}/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
       );
 
       if (res) {
@@ -49,7 +51,7 @@ function App() {
     try {
       setLoading(true);
       const res = await axios.get(
-        ` http://api.openweathermap.org/geo/1.0/direct?q=${location}&appid=${API_KEY}`
+        `${BASE_URL}/geo/1.0/direct?q=${location}&appid=${API_KEY}`
       );
       if (res.data.length > 0) {
         fetchCurrentWeather(res.data[0].lat, res.data[0].lon);
